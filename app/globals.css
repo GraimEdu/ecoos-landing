@@ -1,0 +1,197 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #050307;
+  --ink: #fff;
+  --muted: #b9b1c6;
+  --dim: #4a4258;
+  --line: #221b2b;
+  --grad: linear-gradient(90deg, #4d4dff, #d84dff);
+  --grad-btn: linear-gradient(90deg, #2323ff, #a100e6);
+  --afl-bg: #040a18;
+  --afl-blue: #0a71ff;
+  --afl-sky: #00b0ff;
+  --afl-cyan: #00dfff;
+  --pad: clamp(20px, 4vw, 48px);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-archivo), system-ui, sans-serif; overflow-x: clip; }
+img, video { display: block; max-width: 100%; }
+
+.wrap { width: min(100% - 2 * var(--pad), 1280px); margin-inline: auto; }
+.display { font-family: var(--font-anton), Impact, sans-serif; font-weight: 400; text-transform: uppercase; line-height: 0.9; letter-spacing: -0.005em; }
+.grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.muted { color: var(--muted); }
+.tag { display: inline-flex; gap: 0.4em; font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #8f86a0; }
+.tag b { color: #d84dff; font-weight: 600; }
+
+/* botões: um principal (degradê) e um de contorno */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 24px;
+  font-weight: 600; font-size: 15px; border: 1.5px solid #fff; color: #fff; transition: transform 160ms var(--ease-out); white-space: nowrap; }
+.btn:active { transform: scale(0.97); }
+.btn--fill { background: var(--grad-btn); border-color: transparent; }
+@media (hover: hover) and (pointer: fine) {
+  .btn--fill:hover { filter: brightness(1.12); }
+  .btn:not(.btn--fill):hover { background: #fff; color: var(--bg); }
+}
+:focus-visible { outline: 2px solid #d84dff; outline-offset: 3px; }
+
+/* ---------- topo e hero */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 22px; }
+.top__logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; font-size: 13px; }
+.top__logo img { height: 26px; width: auto; }
+.top nav { display: flex; gap: 28px; font-size: 14px; color: var(--muted); }
+.top nav a:hover { color: #fff; }
+@media (max-width: 899px) { .top nav { display: none; } .top .btn { min-height: 44px; padding: 0 16px; font-size: 14px; } }
+/* celular bem estreito: o botão do topo some; o principal está logo abaixo da frase */
+@media (max-width: 379px) { .top .btn { display: none; } }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; border-bottom: 1px solid var(--line); }
+/* topo na largura toda, acima das duas colunas do hero; mesma margem do título */
+.hero > .top { grid-column: 1 / -1; padding-inline: max(var(--pad), (100vw - 1280px) / 2); }
+.hero__text { display: flex; flex-direction: column; padding-bottom: 40px; }
+.hero h1 { font-size: clamp(52px, 8.6vw, 128px); margin-top: clamp(24px, 5vw, 56px); }
+/* risco feito à mão (strike.tsx anima): [aria-hidden] = a linha */
+.hero h1 s { position: relative; text-decoration: none; color: #3b3446; }
+.hero h1 s > [aria-hidden] { position: absolute; left: 0; right: 0; top: calc(50% - 0.03em); height: 0.09em; background: #c800ff; transform-origin: left; }
+.hero__foot { margin-top: auto; padding-top: 40px; display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: end; }
+.hero__foot p { max-width: 44ch; font-size: 17px; line-height: 1.5; margin: 0; }
+/* coluna da logo: só a logo em 3D, sem moldura, sem fundo, parada */
+.hero__logo { display: grid; place-items: center; padding: clamp(40px, 6vw, 72px) var(--pad); perspective: 1200px; }
+@media (min-width: 1024px) {
+  .hero { grid-template-columns: 1.3fr 0.7fr; min-height: 100svh; }
+  .hero__text { padding-left: max(var(--pad), (100vw - 1280px) / 2); padding-right: 40px; }
+}
+/* celular/tablet: a logo 3D fica atrás do título, apagada; .hero__text some do layout pra título e logo dividirem a mesma linha do grid */
+@media (max-width: 1023px) {
+  .hero__text { display: contents; }
+  .hero h1, .hero__foot { padding-inline: var(--pad); }
+  .hero__foot { padding-bottom: 40px; }
+  .hero h1 { grid-area: 2 / 1; position: relative; z-index: 1; }
+  .hero__logo { grid-area: 2 / 1; padding: 0; margin-top: clamp(24px, 5vw, 56px); opacity: 0.35; pointer-events: none; }
+}
+
+/* logo 3D: camadas da mesma forma empilhadas em Z (logo-3d.tsx); ângulo fixo */
+.logo3d { position: relative; width: min(100%, 380px); aspect-ratio: 1200 / 820; transform-style: preserve-3d; transform: rotateY(-32deg) rotateX(12deg); }
+.logo3d > svg:not([width]) { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; transform: translateZ(calc(var(--z) * -2.6px)); }
+@media (max-width: 1023px) { .logo3d { width: min(72vw, 320px); } }
+
+/* entrada do texto do hero, uma vez no carregamento */
+@media (prefers-reduced-motion: no-preference) {
+  .rise { display: block; animation: rise 900ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 90ms); }
+  /* antes do corte: palavra branca, sem linha */
+  .hero h1 s { color: var(--ink); }
+  .hero h1 s > [aria-hidden] { transform: scaleX(0); }
+  /* título: escondido até o GSAP assumir as letras (motion.tsx); se o JS falhar, aparece sozinho em 2,5s */
+  .hero h1 .rise { animation: hold 0s 2.5s both; }
+}
+@keyframes rise { from { opacity: 0; transform: translateY(28px); } }
+@keyframes hold { from { opacity: 0; } }
+/* elementos que entram de lado (motion.tsx) não alargam a página no celular */
+main { overflow-x: clip; }
+/* letras soltas (chars.tsx) pro GSAP animar uma a uma; a palavra não quebra no meio */
+.w { display: inline-block; white-space: nowrap; }
+.ch { display: inline-block; }
+
+/* ---------- seções */
+.sec { padding-block: clamp(64px, 9vw, 120px); border-bottom: 1px solid var(--line); }
+.sec__head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: clamp(28px, 4vw, 48px); }
+.sec__num { color: var(--dim); font-size: 14px; }
+
+/* serviços */
+.svc { display: grid; gap: 32px; align-items: start; }
+@media (min-width: 1024px) { .svc { grid-template-columns: 1fr 400px; gap: 56px; } }
+.svc__list { list-style: none; margin: 0; padding: 0; }
+.svc__item { width: 100%; display: grid; grid-template-columns: 48px 1fr; gap: 6px 16px; align-items: baseline; text-align: left;
+  padding: 18px 0; border-top: 1px solid #2a2333; cursor: pointer; color: inherit; background: none; }
+.svc__list li:last-child .svc__item { border-bottom: 1px solid #2a2333; }
+.svc__n { font-family: var(--font-anton), Impact, sans-serif; color: var(--dim); font-size: 18px; transition: color 200ms ease; }
+.svc__t { font-size: clamp(32px, 4.2vw, 56px); transition: color 200ms ease; }
+.svc__d { grid-column: 2; color: var(--muted); font-size: 16px; line-height: 1.45; }
+@media (min-width: 900px) {
+  .svc__item { grid-template-columns: 56px 1fr 30ch; }
+  .svc__d { grid-column: 3; text-align: right; }
+}
+.svc__item[aria-pressed="true"] .svc__t, .svc__item[aria-pressed="true"] .svc__n { color: #d84dff; }
+.svc__pic { position: relative; aspect-ratio: 9 / 10; overflow: hidden; background: #120c19; }
+/* fotos empilhadas; a ativa vai pra cima com o corte (services.tsx) */
+.svc__pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; }
+.svc__pic img:first-child { z-index: 1; }
+/* celular/tablet: foto em cima e só o serviço ativo; os outros ficam empilhados no mesmo lugar, invisíveis */
+@media (max-width: 1023px) {
+  .svc__pic { order: -1; max-height: 45svh; }
+  .svc__list { display: grid; }
+  .svc__list li { grid-area: 1 / 1; transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out); }
+  .svc__list li:not(:has([aria-pressed="true"])) { opacity: 0; transform: translateY(12px); pointer-events: none; }
+}
+
+/* caso G10 */
+.case { display: grid; gap: 32px; align-items: center; }
+@media (min-width: 900px) { .case { grid-template-columns: 1fr 1fr; gap: 56px; } }
+.case h2 { font-size: clamp(44px, 6vw, 84px); }
+.case .case__clock { display: flex; align-items: baseline; gap: 0.25em; font-size: clamp(72px, 10vw, 140px); margin: 8px 0; }
+.case__clock i { font-style: normal; color: #d84dff; font-size: 0.4em; }
+.case p:not(.case__clock) { max-width: 42ch; font-size: 17px; line-height: 1.5; margin-top: 20px; }
+.case img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+/* botão no canto superior direito da foto: abre a publicação da G10 */
+.case__pic { position: relative; }
+.case__post { position: absolute; top: 12px; right: 12px; width: 44px; min-height: 44px; padding: 0; font-size: 20px; }
+
+/* números */
+.nums { display: grid; grid-template-columns: 1fr; width: min(100% - 2 * var(--pad), 1280px); margin-inline: auto; }
+@media (min-width: 768px) { .nums { grid-template-columns: repeat(3, 1fr); } }
+.nums > div { padding-block: clamp(32px, 4vw, 48px); border-top: 1px solid var(--line); }
+@media (min-width: 768px) { .nums > div { border-top: 0; border-right: 1px solid var(--line); } .nums > div + div { padding-left: 32px; } .nums > div:last-child { border-right: 0; } }
+.nums b { display: block; font-size: clamp(80px, 9vw, 136px); }
+.nums p { margin: 12px 0 0; color: var(--muted); font-size: 16px; line-height: 1.45; max-width: 30ch; }
+
+/* Afluai: o azul da marca dela */
+.afl { background: var(--afl-bg); border-top: 3px solid var(--afl-blue); }
+.afl .tag b { color: var(--afl-cyan); }
+.afl__head { display: grid; gap: 24px; margin-bottom: 40px; }
+@media (min-width: 900px) { .afl__head { grid-template-columns: 1.2fr 0.8fr; align-items: end; } }
+.afl h2 { font-size: clamp(44px, 6vw, 88px); margin-top: 12px; }
+.afl h2 span { background: linear-gradient(90deg, var(--afl-blue), var(--afl-cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.afl__head p { color: #c3cde2; font-size: 17px; line-height: 1.55; margin: 0; }
+.afl__link { color: var(--afl-cyan); border-bottom: 1px solid currentColor; font-weight: 600; }
+.afl__vids { display: grid; gap: 24px 12px; grid-template-columns: 1fr 1fr; }
+@media (min-width: 640px) { .afl__vids { grid-template-columns: repeat(3, 1fr); } }
+.vcard { display: grid; gap: 10px; align-content: start; }
+.vcard video { width: 100%; aspect-ratio: 9 / 16; object-fit: cover; background: #000; border: 1px solid #12305a; }
+.vcard h3 { font-size: 28px; margin-top: 6px; }
+.vcard p { margin: 0; color: #c3cde2; font-size: 15px; line-height: 1.45; }
+.vcard .who { color: var(--afl-sky); font-size: 13px; font-weight: 600; }
+@media (max-width: 1023px) { .vcard h3 { font-size: 22px; } }
+
+/* clientes */
+.deps { display: grid; gap: 40px; }
+@media (min-width: 900px) { .deps { grid-template-columns: 1fr 1fr; gap: 48px; } }
+.dep { display: grid; grid-template-columns: minmax(120px, 200px) 1fr; gap: 20px; align-items: start; }
+/* celular: os depoimentos dividem as mesmas colunas, então os vídeos ficam do mesmo tamanho */
+@media (max-width: 899px) {
+  .deps { grid-template-columns: minmax(120px, 200px) 1fr; column-gap: 20px; }
+  .dep { grid-column: 1 / -1; grid-template-columns: subgrid; }
+}
+.dep video { width: 100%; aspect-ratio: 9 / 16; object-fit: cover; background: #000; }
+.dep blockquote { margin: 0; font-size: clamp(26px, 2.6vw, 38px); line-height: 1.02; }
+.dep cite { display: block; margin-top: 16px; font-style: normal; color: var(--muted); font-size: 14px; }
+
+/* time */
+/* fotos em fila; motion.tsx trava a seção e corre a fila na horizontal (sem JS ou com movimento reduzido, a fila rola de lado) */
+.team { display: flex; gap: 12px; overflow-x: auto; }
+.team img { flex: none; height: min(62svh, 560px); width: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+.team img:first-child { aspect-ratio: 16 / 10; }
+
+/* fechamento */
+.close h2 { font-size: clamp(56px, 10.5vw, 160px); }
+.close__row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 24px; margin-top: 28px; }
+.close__row p { margin: 0; font-size: 17px; max-width: 46ch; line-height: 1.5; }
+.foot { display: flex; justify-content: space-between; padding-block: 24px; font-size: 13px; color: #6e6680; }
+.foot a:hover { color: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn, .svc__n, .svc__t, .svc__list li { transition: none; }
+}
