@@ -8,10 +8,10 @@ import { base } from "./base";
 gsap.registerPlugin(ScrollTrigger);
 
 const services = [
-  { t: "Tráfego pago", d: "Anúncio no Instagram e no Google que filtra o curioso antes do atendimento.", img: "/img/f-mesa1.webp" },
-  { t: "CRM", d: "Todo lead no funil, com follow-up na hora certa e nenhum cliente esquecido.", img: "/img/f-mesa2.webp" },
-  { t: "Treinamento comercial", d: "Roteiro e prática para o time responder rápido e fechar sem baixar preço.", img: "/img/f-roxo.webp" },
-  { t: "SEO", d: "Site e perfil achados por quem já procura o que a sua empresa vende.", img: "/img/f-terno.webp" },
+  { t: "Tráfego pago", d: "Anúncio no Instagram e no Google que filtra o curioso antes do atendimento.", img: "/img/svc-trafego.webp", video: "/video/svc-trafego.mp4" },
+  { t: "CRM", d: "Todo lead no funil, com follow-up na hora certa e nenhum cliente esquecido.", img: "/img/svc-crm.webp", video: "/video/svc-crm.mp4" },
+  { t: "Treinamento comercial", d: "Roteiro e prática para o time responder rápido e fechar sem baixar preço.", img: "/img/svc-treinamento.webp", video: "/video/svc-treinamento.mp4" },
+  { t: "SEO", d: "Site e perfil achados por quem já procura o que a sua empresa vende.", img: "/img/svc-seo.webp", video: "/video/svc-seo.mp4" },
 ];
 
 // A foto ao lado troca pelo serviço em foco: rolagem, teclado (Tab), clique ou toque.
@@ -21,6 +21,7 @@ export default function Services() {
   const pic = useRef<HTMLDivElement>(null);
   const shown = useRef(0);
   const z = useRef(1);
+  const [vis, setVis] = useState(false);
 
   // Troca: a foto nova vai pra cima e entra com um corte da esquerda pra direita e um leve zoom.
   useEffect(() => {
@@ -51,6 +52,21 @@ export default function Services() {
     return () => { ctx.revert(); gsap.killTweensOf(imgs); };
   }, []);
 
+  // Vídeo: só o do serviço em foco toca, e só com a seção na tela (preload="none": nada baixa antes).
+  useEffect(() => {
+    const io = new IntersectionObserver(([e]) => setVis(e.isIntersecting));
+    io.observe(root.current!);
+    return () => io.disconnect();
+  }, []);
+  useEffect(() => {
+    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    [...pic.current!.children].forEach((el, i) => {
+      if (!(el instanceof HTMLVideoElement)) return;
+      if (i === on && vis && !still) el.play().catch(() => {}); // autoplay bloqueado: fica o poster
+      else el.pause();
+    });
+  }, [on, vis]);
+
   return (
     <div className="svc" ref={root}>
       <ol className="svc__list">
@@ -71,9 +87,13 @@ export default function Services() {
         ))}
       </ol>
       <div className="svc__pic" ref={pic}>
-        {services.map((s, i) => (
-          <img key={s.img} src={base + s.img} alt="" loading={i ? "lazy" : undefined} />
-        ))}
+        {services.map((s, i) =>
+          s.video ? (
+            <video key={s.img} src={base + s.video} poster={base + s.img} muted loop playsInline preload="none" aria-hidden="true" />
+          ) : (
+            <img key={s.img} src={base + s.img} alt="" loading={i ? "lazy" : undefined} />
+          ),
+        )}
       </div>
     </div>
   );
