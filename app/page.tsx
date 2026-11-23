@@ -142,9 +142,9 @@ export default function Home() {
             <div className="sec__head"><h2 className="tag" id="time-h">Time <b>Ecoos</b> 💜</h2></div>
             <div className="team">
               <img src={base + "/img/time.webp"} alt="Equipe da Ecoos reunida no escritório, a maioria de camisa roxa" loading="lazy" />
-              <img src={base + "/img/palestra.webp"} alt="Integrante da Ecoos falando num evento, com a marca no telão" loading="lazy" />
-              <img src={base + "/img/lancamento.webp"} alt="Integrante da Ecoos de camisa polo preta trabalhando no computador" loading="lazy" />
-              <img src={base + "/img/treinamento.webp"} alt="Integrante da Ecoos de óculos e camisa polo preta, sorrindo" loading="lazy" />
+              <img src={base + "/img/palestra.webp"} alt="Taric Couto, da Ecoos, falando num evento, com a marca no telão" loading="lazy" />
+              <img src={base + "/img/lancamento.webp"} alt="Renato Garcia, da Ecoos, de camisa polo preta trabalhando no computador" loading="lazy" />
+              <img src={base + "/img/treinamento.webp"} alt="Adriano Andrade, da Ecoos, de óculos e camisa polo preta, sorrindo" loading="lazy" />
               <img src={base + "/img/estrategia.webp"} alt="Integrante da Ecoos montando campanhas no computador" loading="lazy" />
             </div>
           </div>
