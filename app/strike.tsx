@@ -13,8 +13,8 @@ export default function Strike({ children }: { children: string }) {
     mm.add("(prefers-reduced-motion: no-preference)", () => {
       const s = ref.current!;
       gsap.timeline({ delay: 1.2 })
-        .to(s.lastElementChild, { scaleX: 1, duration: 0.35, ease: "power3.inOut" })
-        .to(s, { color: "#3b3446", duration: 0.3, ease: "power1.out" }, "-=0.15");
+        .to(s.lastElementChild, { scaleX: 1, duration: 0.6, ease: "power3.inOut" })
+        .to(s, { color: "#3b3446", duration: 0.4, ease: "power1.out" }, "-=0.2");
     });
     return () => mm.revert();
   }, []);
