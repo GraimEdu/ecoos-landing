@@ -7,6 +7,7 @@ import Count from "./count";
 import Chars from "./chars";
 import Motion from "./motion";
 import { base } from "./base";
+import Fab from "./fab";
 
 // Placeholder: trocar pelo link do formulário da Afluai quando ele existir.
 const FORM_URL = "#";
@@ -164,6 +165,7 @@ export default function Home() {
         <span>© 2026 Ecoos Company</span>
         <a href="https://www.instagram.com/ecooscompany/">Instagram</a>
       </footer>
+      <Fab href={FORM_URL}>{CTA} →</Fab>
       <SoloVideo />
       <Motion />
     </>

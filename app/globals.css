@@ -188,10 +188,18 @@ main { overflow-x: clip; }
 .close h2 { font-size: clamp(56px, 10.5vw, 160px); }
 .close__row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 24px; margin-top: 28px; }
 .close__row p { margin: 0; font-size: 17px; max-width: 46ch; line-height: 1.5; }
+
+/* botão flutuante (fab.tsx): canto inferior direito; no celular, barra larga no rodapé. Escondido até o hero sair da tela */
+.fab { position: fixed; right: max(var(--pad), env(safe-area-inset-right)); bottom: max(20px, env(safe-area-inset-bottom)); z-index: 50;
+  box-shadow: 0 10px 30px rgb(161 0 230 / 0.35); opacity: 0; transform: translateY(16px); pointer-events: none;
+  transition: opacity 250ms var(--ease-out), transform 250ms var(--ease-out); }
+.fab[data-on] { opacity: 1; transform: none; pointer-events: auto; }
+.fab[data-on]:active { transform: scale(0.97); }
+@media (max-width: 639px) { .fab { left: var(--pad); } }
 .foot { display: flex; justify-content: space-between; padding-block: 24px; font-size: 13px; color: #6e6680; }
 .foot a:hover { color: #fff; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .btn, .svc__n, .svc__t, .svc__list li { transition: none; }
+  .btn, .svc__n, .svc__t, .svc__list li, .fab { transition: none; }
 }
