@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { preFilled } from "./pre";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,12 +13,16 @@ export default function Motion() {
   useEffect(() => {
     const mm = gsap.matchMedia();
     mm.add("(prefers-reduced-motion: no-preference)", () => {
-      // Hero: letras sobem uma a uma; a linha do degradê entra inteira no fim.
+      // Hero: quando a logo acaba de encher, a tela de carregamento (.pre) sobe; as letras sobem uma a uma junto
+      // e a linha do degradê entra inteira no fim.
       const lines = gsap.utils.toArray<HTMLElement>(".hero h1 .rise");
       lines.forEach((l) => (l.style.animation = "none"));
-      gsap.timeline()
-        .from(".hero h1 .ch", { yPercent: 110, opacity: 0, rotate: 8, duration: 0.7, ease: "power3.out", stagger: 0.03 })
+      const intro = gsap.timeline({ paused: true })
+        .to(".pre", { yPercent: -100, duration: 0.7, ease: "power4.inOut" })
+        .set(".pre", { display: "none" })
+        .from(".hero h1 .ch", { yPercent: 110, opacity: 0, rotate: 8, duration: 0.7, ease: "power3.out", stagger: 0.03 }, "-=0.5")
         .from(lines[3], { yPercent: 60, opacity: 0, duration: 0.8, ease: "power3.out" }, "-=0.45");
+      preFilled().then(() => intro.play());
 
       // Hero ao descer: o título sobe e apaga, a logo 3D gira.
       const heroOut = { trigger: ".hero", start: "top top", end: "bottom top" };

@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import Logo3D from "./logo-3d";
+import { mark } from "./logo-paths";
 import Services from "./services";
 import SoloVideo from "./solo-video";
 import Strike from "./strike";
@@ -31,6 +32,22 @@ const deps = [
 export default function Home() {
   return (
     <>
+      {/* Tela de carregamento: a logo enche como líquido só com CSS (.pre), antes do JS chegar; motion.tsx sobe a tela e solta o hero. */}
+      <div className="pre" aria-hidden="true">
+        <div className="pre__logo">
+          <div className="pre__level">
+            {/* a parte ainda vazia: cinza, com a borda de baixo em onda (2 ondas de 600 em 1800) */}
+            <svg className="pre__wave" viewBox="0 0 1800 900" preserveAspectRatio="none">
+              <path d="M0 0H1800V864q-150 56-300 0t-300 0-300 0-300 0-300 0-300 0Z" />
+            </svg>
+          </div>
+        </div>
+        <svg width="0" height="0" style={{ position: "absolute" }}>
+          <clipPath id="pre-clip" clipPathUnits="objectBoundingBox">
+            <use href="#ecoos-mark" transform={`scale(${1 / mark.w} ${1 / mark.h})`} clipRule="evenodd" />
+          </clipPath>
+        </svg>
+      </div>
       <header className="hero">
         <div className="top">
           <a className="top__logo" href="#top"><img src={base + "/logo.png"} alt="" width={38} height={26} />Ecoos Company</a>

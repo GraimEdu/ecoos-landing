@@ -14,6 +14,7 @@
   --afl-cyan: #00dfff;
   --pad: clamp(20px, 4vw, 48px);
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 html { scroll-behavior: smooth; }
@@ -37,6 +38,18 @@ img, video { display: block; max-width: 100%; }
   .btn:not(.btn--fill):hover { background: #fff; color: var(--bg); }
 }
 :focus-visible { outline: 2px solid #d84dff; outline-offset: 3px; }
+
+/* ---------- tela de carregamento: a logo enche como líquido só com CSS (roda antes do JS); motion.tsx sobe a tela e solta o hero.
+   Se o JS falhar, a tela sai sozinha em 5s. */
+.pre { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: var(--bg); animation: pre-out 700ms 5s var(--ease-in-out) forwards; }
+/* a forma da logo recorta o degradê (o líquido) e a parte cinza que sobe por cima dele */
+.pre__logo { position: relative; width: min(44vw, 200px); aspect-ratio: 1200 / 820; clip-path: url(#pre-clip); background: linear-gradient(90deg, #1414ff, #c800ff); }
+.pre__level { position: absolute; inset: 0; animation: pre-fill 1.2s var(--ease-in-out) both; }
+/* 1800×900 na escala da logo (1200×820): sobra uma onda inteira para o lado, e a borda fica abaixo da logo no começo */
+.pre__wave { position: absolute; top: 0; left: 0; width: 150%; height: calc(100% * 900 / 820); fill: var(--line); animation: pre-wave 900ms linear infinite; }
+@keyframes pre-fill { to { transform: translateY(-110%); } }
+@keyframes pre-wave { to { transform: translateX(-33.333%); } }
+@keyframes pre-out { to { transform: translateY(-100%); visibility: hidden; } }
 
 /* ---------- topo e hero */
 .top { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 22px; }
@@ -209,5 +222,6 @@ main { overflow-x: clip; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .pre { display: none; }
   .btn, .svc__n, .svc__t, .svc__d, .svc__list li, .fab { transition: none; }
 }
