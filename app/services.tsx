@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const services = [
   { t: "Tráfego pago", d: "Anúncio no Instagram e no Google que filtra o curioso antes do atendimento.", img: "/img/svc-trafego.webp", video: "/video/svc-trafego.mp4" },
-  { t: "CRM", d: "Todo lead no funil, com follow-up na hora certa e nenhum cliente esquecido.", img: "/img/svc-crm.webp", video: "/video/svc-crm.mp4" },
+  { t: "Afluai", d: "Todo lead no funil, com follow-up na hora certa e nenhum cliente esquecido.", img: "/img/svc-crm.webp", video: "/video/svc-crm.mp4" },
   { t: "Treinamento comercial", d: "Roteiro e prática para o time responder rápido e fechar sem baixar preço.", img: "/img/svc-treinamento.webp", video: "/video/svc-treinamento.mp4" },
   { t: "SEO", d: "Site e perfil achados por quem já procura o que a sua empresa vende.", img: "/img/svc-seo.webp", video: "/video/svc-seo.mp4" },
 ];

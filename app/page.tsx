@@ -51,7 +51,6 @@ export default function Home() {
           </h1>
           <div className="hero__foot rise" style={i(5)}>
             <p className="muted">Tráfego pago, CRM, treinamento comercial e SEO para empresas que querem vender mais. Mais de 70 já aceleradas.</p>
-            <a className="btn btn--fill" href={FORM_URL}>{CTA} →</a>
           </div>
         </div>
         <div className="hero__logo">
